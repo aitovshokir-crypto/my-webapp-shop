@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do'kon Vitrinasi</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--tg-theme-bg-color, #17212b);
+            color: var(--tg-theme-text-color, #ffffff);
+            margin: 0; padding: 12px;
+        }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .admin-btn { background: #334155; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+        
+        #admin-panel {
+            display: none;
+            background: #1e293b;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        input {
+            width: 100%; padding: 8px; margin-bottom: 8px;
+            border-radius: 6px; border: 1px solid #475569;
+            background: #0f172a; color: white; outline: none;
+        }
+        .add-btn { width: 100%; background: #22c55e; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .card {
+            background: var(--tg-theme-secondary-bg-color, #242f3d);
+            border-radius: 12px; padding: 10px;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card img { width: 100%; height: 100px; object-fit: cover; border-radius: 8px; }
+        .title { font-weight: 600; font-size: 13px; margin: 6px 0 2px; }
+        .price { color: #64b5f6; font-size: 13px; font-weight: bold; margin-bottom: 6px; }
+        .btn { background-color: #2481cc; color: white; text-align: center; padding: 6px 0; border-radius: 6px; text-decoration: none; font-size: 12px; display: block; }
+        .del-btn { background: #ef4444; color: white; border: none; width: 100%; padding: 6px; border-radius: 6px; margin-top: 6px; font-size: 11px; cursor: pointer; }
+        .loading { text-align: center; font-size: 13px; color: #94a3b8; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h3 style="margin:0;">Do'kon</h3>
+        <button class="admin-btn" onclick="toggleAdmin()">Admin Panel</button>
+    </div>
+
+    <div id="admin-panel">
+        <input type="password" id="admin-pass" placeholder="Parolni kiriting">
+        <div id="admin-inputs" style="display:none;">
+            <input type="text" id="p-name" placeholder="Mahsulot nomi">
+            <input type="text" id="p-price" placeholder="Narxi (masalan: 18 500 so'm)">
+            <input type="text" id="p-img" placeholder="Rasm havolasi (URL)">
+            <button class="add-btn" onclick="addProduct()">Qo'shish</button>
+        </div>
+    </div>
+
+    <div class="loading" id="loader">Mahsulotlar yuklanmoqda...</div>
+    <div class="grid" id="products"></div>
+
+    <script>
+        window.Telegram.WebApp.expand();
+        const myTelegram = "_kasimov_";
+        
+        const SUPABASE_URL = "https://tglbdocejiginifpoloh.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_6WV0WtaAi9EgI6Wh3EJMvA_YH-2ncM1";
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let isAdmin = false;
+
+        function toggleAdmin() {
+            const panel = document.getElementById('admin-panel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        }
+
+        document.getElementById('admin-pass').addEventListener('input', function(e) {
+            if(e.target.value === "1234") {
+                isAdmin = true;
+                document.getElementById('admin-inputs').style.display = 'block';
+                loadProducts();
+            }
+        });
+
+        async function loadProducts() {
+            const { data, error } = await db.from('products').select('*');
+            const container = document.getElementById('products');
+            document.getElementById('loader').style.display = 'none';
+            container.innerHTML = '';
+
+            if (data) {
+                data.forEach(p => {
+                    const link = `https://t.me/${myTelegram}?text=Salom!+${encodeURIComponent(p.name)}+sotib+olmoqchiman`;
+                    container.innerHTML += `
+                        <div class="card">
+                            <div>
+                                <img src="${p.img || 'https://via.placeholder.com/150'}" alt="${p.name}">
+                                <div class="title">${p.name}</div>
+                                <div class="price">${p.price}</div>
+                            </div>
+                            <a href="${link}" target="_blank" class="btn">Sotib olish</a>
+                            ${isAdmin ? `<button class="del-btn" onclick="deleteProduct(${p.id})">O'chirish</button>` : ''}
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        async function addProduct() {
+            const name = document.getElementById('p-name').value;
+            const price = document.getElementById('p-price').value;
+            const img = document.getElementById('p-img').value;
+
+            if(name && price) {
+                await db.from('products').insert([{ name, price, img }]);
+                document.getElementById('p-name').value = '';
+                document.getElementById('p-price').value = '';
+                document.getElementById('p-img').value = '';
+                loadProducts();
+            }
+        }
+
+        async function deleteProduct(id) {
+            await db.from('products').delete().eq('id', id);
+            loadProducts();
+        }
+
+        loadProducts();
+    </script>
+</body>
+</html>
