@@ -3,66 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Do'kon Vitrinasi</title>
+    <title>MARKET</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--tg-theme-bg-color, #17212b);
-            color: var(--tg-theme-text-color, #ffffff);
-            margin: 0; padding: 12px;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            background: #090d16;
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 16px;
+            overflow-x: hidden;
+            position: relative;
         }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .admin-btn { background: #334155; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
-        
+
+        /* Ambient Glass Glow Shapes */
+        .shape-1 {
+            position: fixed; width: 220px; height: 220px;
+            background: radial-gradient(circle, rgba(99,102,241,0.35) 0%, rgba(0,0,0,0) 70%);
+            top: -50px; left: -50px; z-index: -1; filter: blur(30px);
+        }
+        .shape-2 {
+            position: fixed; width: 250px; height: 250px;
+            background: radial-gradient(circle, rgba(236,72,153,0.3) 0%, rgba(0,0,0,0) 70%);
+            bottom: -50px; right: -50px; z-index: -1; filter: blur(40px);
+        }
+
+        /* Glass Header */
+        .header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 18px; margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .brand { font-size: 20px; font-weight: 800; letter-spacing: 2px; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3); cursor: pointer; user-select: none; }
+
+        /* Hidden Admin Panel */
         #admin-panel {
             display: none;
-            background: #1e293b;
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 15px;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 16px; border-radius: 20px; margin-bottom: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
-        input {
-            width: 100%; padding: 8px; margin-bottom: 8px;
-            border-radius: 6px; border: 1px solid #475569;
-            background: #0f172a; color: white; outline: none;
+        input, button { font-family: inherit; }
+        input[type="text"], input[type="password"], input[type="file"] {
+            width: 100%; padding: 10px 14px; margin-bottom: 10px;
+            border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05); color: #fff; font-size: 13px; outline: none;
         }
-        .add-btn { width: 100%; background: #22c55e; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .file-label {
+            display: block; width: 100%; padding: 10px; text-align: center;
+            background: rgba(255,255,255,0.08); border: 1px dashed rgba(255,255,255,0.25);
+            border-radius: 12px; font-size: 12px; color: #cbd5e1; cursor: pointer; margin-bottom: 10px;
+        }
+        .add-btn {
+            width: 100%; background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
 
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        /* Grid & Glass Cards */
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
         .card {
-            background: var(--tg-theme-secondary-bg-color, #242f3d);
-            border-radius: 12px; padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px; padding: 12px;
             display: flex; flex-direction: column; justify-content: space-between;
+            transition: transform 0.2s, border 0.2s;
+            box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.2);
         }
-        .card img { width: 100%; height: 100px; object-fit: cover; border-radius: 8px; }
-        .title { font-weight: 600; font-size: 13px; margin: 6px 0 2px; }
-        .price { color: #64b5f6; font-size: 13px; font-weight: bold; margin-bottom: 6px; }
-        .btn { background-color: #2481cc; color: white; text-align: center; padding: 6px 0; border-radius: 6px; text-decoration: none; font-size: 12px; display: block; }
-        .del-btn { background: #ef4444; color: white; border: none; width: 100%; padding: 6px; border-radius: 6px; margin-top: 6px; font-size: 11px; cursor: pointer; }
-        .loading { text-align: center; font-size: 13px; color: #94a3b8; margin: 20px 0; }
+        .card:active { transform: scale(0.97); }
+        .card img { width: 100%; height: 110px; object-fit: cover; border-radius: 14px; margin-bottom: 10px; }
+        .title { font-weight: 600; font-size: 13px; color: #f1f5f9; margin-bottom: 4px; line-height: 1.3; }
+        .price { font-weight: 800; font-size: 14px; color: #38bdf8; margin-bottom: 10px; text-shadow: 0 0 8px rgba(56, 189, 248, 0.3); }
+        .btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff; text-align: center; padding: 9px 0; border-radius: 12px;
+            text-decoration: none; font-weight: 700; font-size: 12px; backdrop-filter: blur(5px);
+        }
+        .del-btn { background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; width: 100%; padding: 6px; border-radius: 10px; margin-top: 8px; font-size: 11px; cursor: pointer; }
+        .loading { text-align: center; font-size: 13px; color: #64748b; margin-top: 40px; }
     </style>
 </head>
 <body>
 
+    <div class="shape-1"></div>
+    <div class="shape-2"></div>
+
     <div class="header">
-        <h3 style="margin:0;">Do'kon</h3>
-        <button class="admin-btn" onclick="toggleAdmin()">Admin Panel</button>
+        <div class="brand" id="brand-title">MARKET</div>
     </div>
 
     <div id="admin-panel">
-        <input type="password" id="admin-pass" placeholder="Parolni kiriting">
+        <input type="password" id="admin-pass" placeholder="Admin parol...">
         <div id="admin-inputs" style="display:none;">
             <input type="text" id="p-name" placeholder="Mahsulot nomi">
-            <input type="text" id="p-price" placeholder="Narxi (masalan: 18 500 so'm)">
-            <input type="text" id="p-img" placeholder="Rasm havolasi (URL)">
+            <input type="text" id="p-price" placeholder="Narxi (masalan: 20 000 so'm)">
+            <label class="file-label" for="p-file" id="file-text">📁 Galereyadan rasm tanlash</label>
+            <input type="file" id="p-file" accept="image/*" style="display:none;" onchange="handleFileSelect(event)">
             <button class="add-btn" onclick="addProduct()">Qo'shish</button>
         </div>
     </div>
 
-    <div class="loading" id="loader">Mahsulotlar yuklanmoqda...</div>
+    <div class="loading" id="loader">MARKET yuklanmoqda...</div>
     <div class="grid" id="products"></div>
 
     <script>
@@ -74,22 +126,39 @@
         const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let isAdmin = false;
+        let base64Image = "";
+        let tapCount = 0;
 
-        function toggleAdmin() {
-            const panel = document.getElementById('admin-panel');
-            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-        }
+        // Triple Tap to open Admin Panel
+        document.getElementById('brand-title').addEventListener('click', () => {
+            tapCount++;
+            if (tapCount === 3) {
+                document.getElementById('admin-panel').style.display = 'block';
+                tapCount = 0;
+            }
+            setTimeout(() => { tapCount = 0; }, 1500);
+        });
 
         document.getElementById('admin-pass').addEventListener('input', function(e) {
-            if(e.target.value === "1234") {
+            if(e.target.value === "ZEARZEAR1") {
                 isAdmin = true;
                 document.getElementById('admin-inputs').style.display = 'block';
                 loadProducts();
             }
         });
 
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('file-text').innerText = "✅ " + file.name;
+                const reader = new FileReader();
+                reader.onload = function(evt) { base64Image = evt.target.result; };
+                reader.readAsDataURL(file);
+            }
+        }
+
         async function loadProducts() {
-            const { data, error } = await db.from('products').select('*');
+            const { data } = await db.from('products').select('*');
             const container = document.getElementById('products');
             document.getElementById('loader').style.display = 'none';
             container.innerHTML = '';
@@ -115,13 +184,13 @@
         async function addProduct() {
             const name = document.getElementById('p-name').value;
             const price = document.getElementById('p-price').value;
-            const img = document.getElementById('p-img').value;
 
             if(name && price) {
-                await db.from('products').insert([{ name, price, img }]);
+                await db.from('products').insert([{ name, price, img: base64Image }]);
                 document.getElementById('p-name').value = '';
                 document.getElementById('p-price').value = '';
-                document.getElementById('p-img').value = '';
+                document.getElementById('file-text').innerText = "📁 Galereyadan rasm tanlash";
+                base64Image = "";
                 loadProducts();
             }
         }
