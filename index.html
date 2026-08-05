@@ -22,28 +22,44 @@
         .brand { font-size: 20px; font-weight: 800; letter-spacing: 2px; color: #fff; cursor: pointer; user-select: none; }
         .lang-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; }
 
-        /* Controls: Search & Categories */
         .controls { margin-bottom: 16px; display: flex; flex-direction: column; gap: 10px; }
         .search-box { width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; outline: none; font-size: 13px; }
         .cats { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
         .cat-chip { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 20px; font-size: 12px; white-space: nowrap; cursor: pointer; color: #cbd5e1; }
         .cat-chip.active { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: #fff; border-color: transparent; font-weight: 700; }
 
-        #admin-panel { display: none; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); padding: 16px; border-radius: 20px; margin-bottom: 20px; }
+        /* Admin Panel Styles */
+        #admin-panel { display: none; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); padding: 16px; border-radius: 20px; margin-bottom: 20px; }
+        .admin-tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+        .tab-btn { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; padding: 8px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; text-align: center; }
+        .tab-btn.active { background: #6366f1; color: #fff; border-color: transparent; }
+
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+
         input, select, button { font-family: inherit; }
         input[type="text"], input[type="number"], input[type="password"], select { width: 100%; padding: 10px 14px; margin-bottom: 10px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.08); color: #fff; font-size: 13px; outline: none; }
         .file-label { display: block; width: 100%; padding: 10px; text-align: center; background: rgba(255,255,255,0.08); border: 1px dashed rgba(255,255,255,0.25); border-radius: 12px; font-size: 12px; color: #cbd5e1; cursor: pointer; margin-bottom: 10px; }
-        .add-btn { width: 100%; background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; }
+        .action-btn { width: 100%; background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; }
 
+        /* Admin Product Item Edit Card */
+        .admin-prod-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 10px; border-radius: 12px; margin-bottom: 10px; display: flex; gap: 10px; align-items: center; }
+        .admin-prod-card img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; }
+        .admin-prod-info { flex: 1; }
+        .admin-prod-info input { margin-bottom: 4px; padding: 6px 10px; font-size: 12px; }
+        .admin-actions { display: flex; gap: 6px; }
+        .save-item-btn { background: #10b981; border: none; color: #fff; padding: 6px 10px; border-radius: 8px; font-size: 11px; cursor: pointer; font-weight: 600; }
+        .del-item-btn { background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 6px 10px; border-radius: 8px; font-size: 11px; cursor: pointer; }
+
+        /* Public Grid & Cards */
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-        .card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; }
+        .card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 258, 0.08); border-radius: 20px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; }
         .card img { width: 100%; height: 110px; object-fit: cover; border-radius: 14px; margin-bottom: 8px; }
         .title { font-weight: 600; font-size: 13px; color: #f1f5f9; margin-bottom: 2px; }
         .stock { font-size: 11px; color: #a1a1aa; margin-bottom: 4px; }
         .price { font-weight: 800; font-size: 14px; color: #38bdf8; margin-bottom: 8px; }
         .btn { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; text-align: center; padding: 9px 0; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 12px; display: block; }
         .btn.disabled { opacity: 0.5; pointer-events: none; background: rgba(255,255,255,0.05); }
-        .del-btn { background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; width: 100%; padding: 6px; border-radius: 10px; margin-top: 8px; font-size: 11px; cursor: pointer; }
         .loading { text-align: center; font-size: 13px; color: #64748b; margin-top: 40px; }
     </style>
 </head>
@@ -57,21 +73,36 @@
         <button class="lang-btn" onclick="toggleLang()" id="lang-btn">UZ</button>
     </div>
 
+    <!-- Search & Categories -->
     <div class="controls">
         <input type="text" class="search-box" id="search-input" placeholder="Qidirish..." oninput="filterProducts()">
         <div class="cats" id="cat-list"></div>
     </div>
 
+    <!-- Organized Admin Panel -->
     <div id="admin-panel">
         <input type="password" id="admin-pass" placeholder="Admin parol...">
-        <div id="admin-inputs" style="display:none;">
-            <input type="text" id="p-name" placeholder="Mahsulot nomi">
-            <input type="text" id="p-price" placeholder="Narxi (masalan: 20 000 so'm)">
-            <input type="number" id="p-stock" placeholder="Soni (masalan: 10)">
-            <input type="text" id="p-cat" placeholder="Bo'lim (masalan: Kiyimlar)">
-            <label class="file-label" for="p-file" id="file-text">📁 Galereyadan rasm tanlash</label>
-            <input type="file" id="p-file" accept="image/*" style="display:none;" onchange="handleFileSelect(event)">
-            <button class="add-btn" id="save-btn" onclick="addProduct()">Qo'shish</button>
+        <div id="admin-content" style="display:none;">
+            <div class="admin-tabs">
+                <div class="tab-btn active" onclick="switchTab('add', this)" id="tab-add-btn">➕ Qo'shish</div>
+                <div class="tab-btn" onclick="switchTab('manage', this)" id="tab-man-btn">⚙️ Tahrirlash / O'chirish</div>
+            </div>
+
+            <!-- Tab 1: Add Product -->
+            <div class="admin-section active" id="section-add">
+                <input type="text" id="p-name" placeholder="Mahsulot nomi">
+                <input type="text" id="p-price" placeholder="Narxi (masalan: 20 000 so'm)">
+                <input type="number" id="p-stock" placeholder="Soni (masalan: 10)">
+                <input type="text" id="p-cat" placeholder="Bo'lim (masalan: Kiyimlar)">
+                <label class="file-label" for="p-file" id="file-text">📁 Galereyadan rasm tanlash</label>
+                <input type="file" id="p-file" accept="image/*" style="display:none;" onchange="handleFileSelect(event, 'new')">
+                <button class="action-btn" id="save-btn" onclick="addProduct()">Qo'shish</button>
+            </div>
+
+            <!-- Tab 2: Manage / Edit Products -->
+            <div class="admin-section" id="section-manage">
+                <div id="admin-products-list" style="max-height: 300px; overflow-y: auto; padding-right: 4px;"></div>
+            </div>
         </div>
     </div>
 
@@ -80,7 +111,7 @@
 
     <script>
         if(window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.expand();
-        const myTelegram = "_kasimov_";
+        const myTelegram = "Xodim_aka";
         const db = supabase.createClient("https://tglbdocejiginifpoloh.supabase.co", "sb_publishable_6WV0WtaAi9EgI6Wh3EJMvA_YH-2ncM1");
 
         let currentLang = 'UZ';
@@ -88,21 +119,25 @@
         let activeCat = 'ALL';
         let isAdmin = false;
         let base64Image = "";
+        let editBase64Images = {};
         let tapCount = 0;
 
         const dict = {
-            UZ: { search: "Qidirish...", buy: "Sotib olish", out: "Tugagan", stock: "Mavjud: ", all: "Barchasi", add: "Qo'shish", loader: "Yuklanmoqda..." },
-            RU: { search: "Поиск...", buy: "Купить", out: "Нет в наличии", stock: "В наличии: ", all: "Все", add: "Добавить", loader: "Загрузка..." }
+            UZ: { search: "Qidirish...", buy: "Sotib olish", out: "Tugagan", stock: "Mavjud: ", all: "Barchasi", addTab: "➕ Qo'shish", manTab: "⚙️ Tahrirlash" },
+            RU: { search: "Поиск...", buy: "Купить", out: "Нет в наличии", stock: "В наличии: ", all: "Все", addTab: "➕ Добавить", manTab: "⚙️ Редактировать" }
         };
 
         function toggleLang() {
             currentLang = currentLang === 'UZ' ? 'RU' : 'UZ';
             document.getElementById('lang-btn').innerText = currentLang;
             document.getElementById('search-input').placeholder = dict[currentLang].search;
+            document.getElementById('tab-add-btn').innerText = dict[currentLang].addTab;
+            document.getElementById('tab-man-btn').innerText = dict[currentLang].manTab;
             renderCategories();
             renderProducts(allProducts);
         }
 
+        // Secret Admin Tap Logic (3 times click on MARKET)
         document.getElementById('brand-title').addEventListener('click', () => {
             tapCount++;
             if (tapCount === 3) { document.getElementById('admin-panel').style.display = 'block'; tapCount = 0; }
@@ -112,12 +147,23 @@
         document.getElementById('admin-pass').addEventListener('input', function(e) {
             if(e.target.value === "ZEARZEAR1") {
                 isAdmin = true;
-                document.getElementById('admin-inputs').style.display = 'block';
-                renderProducts(allProducts);
+                document.getElementById('admin-content').style.display = 'block';
+                renderAdminManageList();
             }
         });
 
-        function handleFileSelect(e) {
+        function switchTab(tab, el) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+            el.classList.add('active');
+            if(tab === 'add') document.getElementById('section-add').classList.add('active');
+            if(tab === 'manage') {
+                document.getElementById('section-manage').classList.add('active');
+                renderAdminManageList();
+            }
+        }
+
+        function handleFileSelect(e, type, id = null) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
@@ -130,8 +176,15 @@
                         canvas.width = 450;
                         canvas.height = img.height * (450 / img.width);
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        base64Image = canvas.toDataURL('image/jpeg', 0.7);
-                        document.getElementById('file-text').innerText = "✅ Rasm tanlandi";
+                        const resultImg = canvas.toDataURL('image/jpeg', 0.7);
+
+                        if(type === 'new') {
+                            base64Image = resultImg;
+                            document.getElementById('file-text').innerText = "✅ Rasm tanlandi";
+                        } else if(type === 'edit') {
+                            editBase64Images[id] = resultImg;
+                            alert("Rasm yangilandi, 'Saqlash' tugmasini bosing!");
+                        }
                     };
                 };
                 reader.readAsDataURL(file);
@@ -144,6 +197,7 @@
             allProducts = data || [];
             renderCategories();
             renderProducts(allProducts);
+            if(isAdmin) renderAdminManageList();
         }
 
         function renderCategories() {
@@ -189,7 +243,32 @@
                             <div class="price">${p.price}</div>
                         </div>
                         <a href="${link}" target="_blank" class="btn ${!isAvailable ? 'disabled' : ''}">${isAvailable ? dict[currentLang].buy : dict[currentLang].out}</a>
-                        ${isAdmin ? `<button class="del-btn" onclick="deleteProduct(${p.id})">O'chirish</button>` : ''}
+                    </div>
+                `;
+            });
+        }
+
+        // Admin Edit List Renderer
+        function renderAdminManageList() {
+            const container = document.getElementById('admin-products-list');
+            container.innerHTML = '';
+            allProducts.forEach(p => {
+                container.innerHTML += `
+                    <div class="admin-prod-card">
+                        <img src="${p.img || 'https://via.placeholder.com/150'}" alt="" onclick="document.getElementById('file-edit-${p.id}').click()" style="cursor:pointer;" title="Rasmni o'zgartirish uchun bosing">
+                        <input type="file" id="file-edit-${p.id}" accept="image/*" style="display:none;" onchange="handleFileSelect(event, 'edit', ${p.id})">
+                        <div class="admin-prod-info">
+                            <input type="text" id="edit-name-${p.id}" value="${p.name}">
+                            <input type="text" id="edit-price-${p.id}" value="${p.price}">
+                            <div style="display:flex; gap:6px;">
+                                <input type="number" id="edit-stock-${p.id}" value="${p.stock || 0}" placeholder="Soni">
+                                <input type="text" id="edit-cat-${p.id}" value="${p.category || ''}" placeholder="Bo'lim">
+                            </div>
+                        </div>
+                        <div class="admin-actions">
+                            <button class="save-item-btn" onclick="updateProduct(${p.id})">💾</button>
+                            <button class="del-item-btn" onclick="deleteProduct(${p.id})">🗑️</button>
+                        </div>
                     </div>
                 `;
             });
@@ -209,12 +288,36 @@
             document.getElementById('p-stock').value = '';
             document.getElementById('p-cat').value = '';
             base64Image = "";
+            document.getElementById('file-text').innerText = "📁 Galereyadan rasm tanlash";
             loadProducts();
+            alert("Mahsulot qo'shildi!");
+        }
+
+        async function updateProduct(id) {
+            const name = document.getElementById(`edit-name-${id}`).value;
+            const price = document.getElementById(`edit-price-${id}`).value;
+            const stock = document.getElementById(`edit-stock-${id}`).value;
+            const category = document.getElementById(`edit-cat-${id}`).value;
+
+            let updateData = { name, price, stock, category };
+            if(editBase64Images[id]) {
+                updateData.img = editBase64Images[id];
+            }
+
+            const { error } = await db.from('products').update(updateData).eq('id', id);
+            if(error) {
+                alert("Xatolik: " + error.message);
+            } else {
+                alert("Muvaffaqiyatli yangilandi!");
+                loadProducts();
+            }
         }
 
         async function deleteProduct(id) {
-            await db.from('products').delete().eq('id', id);
-            loadProducts();
+            if(confirm("Rostdan ham o'chirmoqchimisiz?")) {
+                await db.from('products').delete().eq('id', id);
+                loadProducts();
+            }
         }
 
         loadProducts();
