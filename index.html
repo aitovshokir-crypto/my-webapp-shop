@@ -15,153 +15,105 @@
             overflow-x: hidden; position: relative;
         }
 
-        /* Vibrant Glowing Background Shapes (Glassmorphism Ambient) */
-        .ambient-shape {
-            position: fixed; border-radius: 50%; filter: blur(60px); z-index: -1; pointer-events: none;
-        }
-        .shape-1 { width: 300px; height: 300px; background: rgba(99, 102, 241, 0.4); top: -80px; left: -80px; animation: float 8s ease-in-out infinite alternate; }
-        .shape-2 { width: 350px; height: 350px; background: rgba(236, 72, 153, 0.35); bottom: -100px; right: -100px; animation: float 10s ease-in-out infinite alternate-reverse; }
-        .shape-3 { width: 250px; height: 250px; background: rgba(14, 165, 233, 0.3); top: 40%; left: 30%; filter: blur(80px); }
+        .ambient-shape { position: fixed; border-radius: 50%; filter: blur(60px); z-index: -1; pointer-events: none; }
+        .shape-1 { width: 300px; height: 300px; background: rgba(99, 102, 241, 0.4); top: -80px; left: -80px; }
+        .shape-2 { width: 350px; height: 350px; background: rgba(236, 72, 153, 0.35); bottom: -100px; right: -100px; }
 
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(30px, 40px) scale(1.1); }
-        }
-
-        /* Glass Header */
         .header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 16px 20px; margin-bottom: 16px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.5);
+            padding: 14px 18px; margin-bottom: 16px;
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px;
         }
-        .brand { font-size: 22px; font-weight: 800; letter-spacing: 2.5px; color: #fff; cursor: pointer; user-select: none; background: linear-gradient(135deg, #fff 30%, #94a3b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .header-actions { display: flex; gap: 8px; align-items: center; }
-        .icon-btn, .lang-btn {
-            background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #fff; padding: 8px 12px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer;
-            backdrop-filter: blur(10px); transition: 0.2s;
+        .brand { font-size: 22px; font-weight: 800; letter-spacing: 2px; color: #fff; cursor: pointer; user-select: none; }
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff; padding: 8px 14px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer;
         }
-        .icon-btn:active, .lang-btn:active { transform: scale(0.95); }
 
-        /* Controls: Search & Categories */
         .controls { margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; }
         .search-box {
             width: 100%; padding: 12px 16px; border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.04);
-            color: #fff; outline: none; font-size: 14px; backdrop-filter: blur(12px);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); transition: 0.3s;
+            color: #fff; outline: none; font-size: 14px;
         }
-        .search-box:focus { border-color: rgba(99, 102, 241, 0.6); box-shadow: 0 0 15px rgba(99, 102, 241, 0.3), inset 0 2px 4px rgba(0,0,0,0.2); }
-        
-        .cats { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
-        .cats::-webkit-scrollbar { display: none; }
+        .cats { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
         .cat-chip {
             background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 8px 16px; border-radius: 20px; font-size: 12px; white-space: nowrap; cursor: pointer; color: #94a3b8;
-            backdrop-filter: blur(10px); transition: 0.2s; font-weight: 600;
         }
-        .cat-chip.active { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: #fff; border-color: transparent; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
+        .cat-chip.active { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: #fff; border-color: transparent; font-weight: 700; }
 
-        /* Full Screen Admin Modal Window */
         #admin-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 7, 18, 0.88); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            background: rgba(3, 7, 18, 0.95); backdrop-filter: blur(25px);
             z-index: 100; padding: 20px; overflow-y: auto;
         }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; }
-        .admin-title { font-size: 18px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px; }
         .close-admin { background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 6px 14px; border-radius: 10px; font-size: 12px; cursor: pointer; font-weight: 700; }
 
-        .admin-tabs { display: flex; gap: 8px; margin-bottom: 16px; background: rgba(255,255,255,0.03); padding: 4px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.06); }
-        .tab-btn { flex: 1; background: transparent; border: none; color: #94a3b8; padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; text-align: center; transition: 0.2s; }
-        .tab-btn.active { background: rgba(99, 102, 241, 0.25); color: #fff; border: 1px solid rgba(99, 102, 241, 0.4); }
+        .admin-tabs { display: flex; gap: 8px; margin-bottom: 16px; background: rgba(255,255,255,0.03); padding: 4px; border-radius: 14px; }
+        .tab-btn { flex: 1; background: transparent; border: none; color: #94a3b8; padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; }
+        .tab-btn.active { background: rgba(99, 102, 241, 0.3); color: #fff; border: 1px solid rgba(99, 102, 241, 0.5); }
 
         .admin-section { display: none; }
         .admin-section.active { display: block; }
 
-        input, select, textarea { font-family: inherit; }
         .admin-input {
             width: 100%; padding: 12px 14px; margin-bottom: 12px; border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05);
-            color: #fff; font-size: 13px; outline: none; backdrop-filter: blur(10px);
+            color: #fff; font-size: 13px; outline: none;
         }
-        .admin-input:focus { border-color: #6366f1; }
-        
         .file-label {
             display: block; width: 100%; padding: 14px; text-align: center;
             background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.2);
-            border-radius: 12px; font-size: 13px; color: #cbd5e1; cursor: pointer; margin-bottom: 14px; transition: 0.2s;
+            border-radius: 12px; font-size: 13px; color: #cbd5e1; cursor: pointer; margin-bottom: 14px;
         }
-        .file-label:hover { background: rgba(255,255,255,0.08); border-color: rgba(99,102,241,0.5); }
-
         .action-btn {
             width: 100%; background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
             color: white; border: none; padding: 14px; border-radius: 14px; font-weight: 800; font-size: 14px; cursor: pointer;
-            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.5); transition: 0.2s;
         }
-        .action-btn:active { transform: scale(0.98); }
 
-        /* Admin Manage Item Card */
         .admin-prod-card {
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07);
             padding: 12px; border-radius: 16px; margin-bottom: 12px; display: flex; gap: 12px; align-items: center;
-            backdrop-filter: blur(12px);
         }
-        .admin-prod-card img { width: 60px; height: 60px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
+        .admin-prod-card img { width: 60px; height: 60px; object-fit: cover; border-radius: 10px; }
         .admin-prod-info { flex: 1; }
         .admin-prod-info input { margin-bottom: 6px; padding: 6px 10px; font-size: 12px; height: 32px; }
         .admin-actions { display: flex; flex-direction: column; gap: 6px; }
-        .save-item-btn { background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; padding: 6px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; font-weight: 700; }
-        .del-item-btn { background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 6px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; font-weight: 700; }
+        .save-item-btn { background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; padding: 6px 10px; border-radius: 8px; font-size: 11px; cursor: pointer; font-weight: 700; }
+        .del-item-btn { background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 6px 10px; border-radius: 8px; font-size: 11px; cursor: pointer; font-weight: 700; }
 
-        /* Public Grid & Glass Cards */
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
         .card {
-            background: rgba(255, 255, 255, 0.025);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 20px; padding: 12px;
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 12px;
             display: flex; flex-direction: column; justify-content: space-between;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            transition: transform 0.2s, border-color 0.2s;
         }
-        .card:hover { border-color: rgba(255,255,255,0.15); }
         .card img { width: 100%; height: 120px; object-fit: cover; border-radius: 14px; margin-bottom: 10px; }
-        .title { font-weight: 600; font-size: 13px; color: #f1f5f9; margin-bottom: 3px; line-height: 1.3; }
+        .title { font-weight: 600; font-size: 13px; color: #f1f5f9; margin-bottom: 3px; }
         .stock { font-size: 11px; color: #94a3b8; margin-bottom: 6px; }
-        .price { font-weight: 800; font-size: 14px; color: #38bdf8; margin-bottom: 10px; text-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
+        .price { font-weight: 800; font-size: 14px; color: #38bdf8; margin-bottom: 10px; }
         .btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15);
             color: #fff; text-align: center; padding: 10px 0; border-radius: 12px;
-            text-decoration: none; font-weight: 700; font-size: 12px; backdrop-filter: blur(10px); display: block;
-            transition: 0.2s;
+            text-decoration: none; font-weight: 700; font-size: 12px; display: block;
         }
-        .btn:hover { background: rgba(255, 255, 255, 0.15); }
-        .btn.disabled { opacity: 0.4; pointer-events: none; background: rgba(255,255,255,0.02); }
+        .btn.disabled { opacity: 0.4; pointer-events: none; }
         .loading { text-align: center; font-size: 13px; color: #64748b; margin-top: 50px; }
     </style>
 </head>
 <body>
 
-    <!-- Ambient Glass Shapes -->
     <div class="ambient-shape shape-1"></div>
     <div class="ambient-shape shape-2"></div>
-    <div class="ambient-shape shape-3"></div>
 
     <div class="header">
         <div class="brand" id="brand-title">MARKET</div>
-        <div class="header-actions">
-            <button class="lang-btn" onclick="toggleLang()" id="lang-btn">UZ</button>
-            <button class="icon-btn" onclick="openAdminModal()">⚙️ Admin</button>
-        </div>
+        <button class="lang-btn" onclick="toggleLang()" id="lang-btn">UZ</button>
     </div>
 
-    <!-- Search & Categories -->
     <div class="controls">
         <input type="text" class="search-box" id="search-input" placeholder="Mahsulotlarni qidirish..." oninput="filterProducts()">
         <div class="cats" id="cat-list"></div>
@@ -170,39 +122,35 @@
     <div class="loading" id="loader">Yuklanmoqda...</div>
     <div class="grid" id="products"></div>
 
-    <!-- Full Screen Admin Modal -->
+    <!-- Berkitilgan Admin Oynasi -->
     <div id="admin-modal">
         <div class="admin-header">
-            <div class="admin-title">🔐 Admin Paneli</div>
+            <div style="font-weight: 800; font-size: 18px;">🔐 Admin Paneli</div>
             <button class="close-admin" onclick="closeAdminModal()">✕ Chiqish</button>
         </div>
 
-        <!-- Password check area -->
         <div id="admin-auth-box">
             <input type="password" class="admin-input" id="admin-pass" placeholder="Admin parolini kiriting...">
         </div>
 
-        <!-- Main Admin Dashboard (Hidden until password matches) -->
         <div id="admin-dashboard" style="display:none;">
             <div class="admin-tabs">
                 <button class="tab-btn active" onclick="switchTab('add', this)" id="tab-add-btn">➕ Qo'shish</button>
-                <button class="tab-btn" onclick="switchTab('manage', this)" id="tab-man-btn">⚙️ Tahrirlash & O'chirish</button>
+                <button class="tab-btn" onclick="switchTab('manage', this)" id="tab-man-btn">⚙️ Tahrirlash</button>
             </div>
 
-            <!-- Tab 1: Add Product -->
             <div class="admin-section active" id="section-add">
                 <input type="text" class="admin-input" id="p-name" placeholder="Mahsulot nomi">
                 <input type="text" class="admin-input" id="p-price" placeholder="Narxi (masalan: 20 000 so'm)">
-                <input type="number" class="admin-input" id="p-stock" placeholder="Ombordagi soni (masalan: 10)">
-                <input type="text" class="admin-input" id="p-cat" placeholder="Bo'lim nomi (masalan: Kiyimlar)">
+                <input type="number" class="admin-input" id="p-stock" placeholder="Soni (masalan: 10)">
+                <input type="text" class="admin-input" id="p-cat" placeholder="Bo'lim (masalan: Kiyimlar)">
                 <label class="file-label" for="p-file" id="file-text">📁 Galereyadan rasm tanlash</label>
                 <input type="file" id="p-file" accept="image/*" style="display:none;" onchange="handleFileSelect(event, 'new')">
-                <button class="action-btn" onclick="addProduct()">Mahsulotni Qo'shish</button>
+                <button class="action-btn" onclick="addProduct()">Qo'shish</button>
             </div>
 
-            <!-- Tab 2: Manage Products -->
             <div class="admin-section" id="section-manage">
-                <div id="admin-products-list" style="max-height: calc(100vh - 220px); overflow-y: auto; padding-right: 4px;"></div>
+                <div id="admin-products-list" style="max-height: calc(100vh - 220px); overflow-y: auto;"></div>
             </div>
         </div>
     </div>
@@ -210,7 +158,17 @@
     <script>
         if(window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.expand();
         const myTelegram = "Xodim_aka";
-        const db = supabase.createClient("https://tglbdocejiginifpoloh.supabase.co", "sb_publishable_6WV0WtaAi9EgI6Wh3EJMvA_YH-2ncM1");
+        
+        // Supabase Init
+        const SUPABASE_URL = "https://tglbdocejiginifpoloh.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_6WV0WtaAi9EgI6Wh3EJMvA_YH-2ncM1";
+        let db;
+
+        try {
+            db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        } catch(e) {
+            console.error("Supabase yuklanmadi:", e);
+        }
 
         let currentLang = 'UZ';
         let allProducts = [];
@@ -218,6 +176,20 @@
         let isAdmin = false;
         let base64Image = "";
         let editBase64Images = {};
+
+        // MARKET yozuvini 3 marta bosish mantig'i
+        let clickCount = 0;
+        let clickTimer;
+        document.getElementById('brand-title').addEventListener('click', () => {
+            clickCount++;
+            clearTimeout(clickTimer);
+            if (clickCount >= 3) {
+                openAdminModal();
+                clickCount = 0;
+            } else {
+                clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
+            }
+        });
 
         const dict = {
             UZ: { search: "Mahsulotlarni qidirish...", buy: "Sotib olish", out: "Tugagan", stock: "Mavjud: ", all: "Barchasi", addTab: "➕ Qo'shish", manTab: "⚙️ Tahrirlash" },
@@ -234,7 +206,6 @@
             renderProducts(allProducts);
         }
 
-        // Admin Modal Controls
         function openAdminModal() {
             document.getElementById('admin-modal').style.display = 'block';
             if(isAdmin) {
@@ -297,12 +268,20 @@
         }
 
         async function loadProducts() {
-            const { data } = await db.from('products').select('*');
-            document.getElementById('loader').style.display = 'none';
-            allProducts = data || [];
-            renderCategories();
-            renderProducts(allProducts);
-            if(isAdmin) renderAdminManageList();
+            try {
+                const { data, error } = await db.from('products').select('*');
+                document.getElementById('loader').style.display = 'none';
+                if(error) {
+                    document.getElementById('loader').innerText = "Baza bilan aloqa yo'q yoki bo'sh";
+                    document.getElementById('loader').style.display = 'block';
+                }
+                allProducts = data || [];
+                renderCategories();
+                renderProducts(allProducts);
+                if(isAdmin) renderAdminManageList();
+            } catch(e) {
+                document.getElementById('loader').innerText = "Yuklashda xatolik bo'ldi";
+            }
         }
 
         function renderCategories() {
@@ -334,6 +313,10 @@
         function renderProducts(list) {
             const container = document.getElementById('products');
             container.innerHTML = '';
+            if(list.length === 0) {
+                container.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #64748b; margin-top: 20px;">Mahsulotlar mavjud emas</div>';
+                return;
+            }
             list.forEach(p => {
                 const stockNum = parseInt(p.stock) || 0;
                 const isAvailable = stockNum > 0;
@@ -359,7 +342,74 @@
             allProducts.forEach(p => {
                 container.innerHTML += `
                     <div class="admin-prod-card">
-                        <img src="${p.img || 'https://via.placeholder.com/150'}" alt="" onclick="document.getElementById('file-edit-${p.id}').click()" title="Rasmni o'zgartirish uchun bosing">
+                        <img src="${p.img || 'https://via.placeholder.com/150'}" onclick="document.getElementById('file-edit-${p.id}').click()" title="Rasmni almashtirish">
                         <input type="file" id="file-edit-${p.id}" accept="image/*" style="display:none;" onchange="handleFileSelect(event, 'edit', ${p.id})">
                         <div class="admin-prod-info">
-             
+                            <input type="text" class="admin-input" id="edit-name-${p.id}" value="${p.name}">
+                            <input type="text" class="admin-input" id="edit-price-${p.id}" value="${p.price}">
+                            <div style="display:flex; gap:6px;">
+                                <input type="number" class="admin-input" id="edit-stock-${p.id}" value="${p.stock || 0}" placeholder="Soni">
+                                <input type="text" class="admin-input" id="edit-cat-${p.id}" value="${p.category || ''}" placeholder="Bo'lim">
+                            </div>
+                        </div>
+                        <div class="admin-actions">
+                            <button class="save-item-btn" onclick="updateProduct(${p.id})">💾 Saqlash</button>
+                            <button class="del-item-btn" onclick="deleteProduct(${p.id})">🗑️ O'chirish</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        async function addProduct() {
+            const name = document.getElementById('p-name').value;
+            const price = document.getElementById('p-price').value;
+            const stock = document.getElementById('p-stock').value || 1;
+            const category = document.getElementById('p-cat').value || "Barchasi";
+
+            if(!name || !price) return alert("Nom va narxni kiriting!");
+
+            await db.from('products').insert([{ name, price, stock, category, img: base64Image }]);
+            document.getElementById('p-name').value = '';
+            document.getElementById('p-price').value = '';
+            document.getElementById('p-stock').value = '';
+            document.getElementById('p-cat').value = '';
+            base64Image = "";
+            document.getElementById('file-text').innerText = "📁 Galereyadan rasm tanlash";
+            loadProducts();
+            alert("Mahsulot qo'shildi!");
+        }
+
+        async function updateProduct(id) {
+            const name = document.getElementById(`edit-name-${id}`).value;
+            const price = document.getElementById(`edit-price-${id}`).value;
+            const stock = document.getElementById(`edit-stock-${id}`).value;
+            const category = document.getElementById(`edit-cat-${id}`).value;
+
+            let updateData = { name, price, stock, category };
+            if(editBase64Images[id]) {
+                updateData.img = editBase64Images[id];
+            }
+
+            const { error } = await db.from('products').update(updateData).eq('id', id);
+            if(error) {
+                alert("Xatolik: " + error.message);
+            } else {
+                alert("O'zgarishlar saqlandi!");
+                loadProducts();
+            }
+        }
+
+        async function deleteProduct(id) {
+            if(confirm("Mahsulotni o'chirmoqchimisiz?")) {
+                await db.from('products').delete().eq('id', id);
+                loadProducts();
+            }
+        }
+
+        window.onload = function() {
+            loadProducts();
+        };
+    </script>
+</body>
+</html>
