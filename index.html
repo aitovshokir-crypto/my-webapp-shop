@@ -351,4 +351,285 @@
                         base64Image = res;
                         document.getElementById('file-text').innerText = "✅ Rasm tayyor";
                     } else {
-                        e
+                        editBase64Images[id] = res;
+                        alert("Rasm almashtirildi, saqlash tugmasini bosing.");
+                    }
+                });
+            }
+        }
+
+        function handleBrandLogoSelect(e) {
+            if (e.target.files[0]) {
+                compressImage(e.target.files[0], (res) => {
+                    brandLogoBase64 = res;
+                    document.getElementById('b-file-text').innerText = "✅ Logotip tanlandi";
+                });
+            }
+        }
+
+        async function loadProducts() {
+            try {
+                const { data, error } = await db.from('products').select('*');
+                document.getElementById('loader').style.display = 'none';
+                allProducts = data || [];
+                renderCategories();
+                renderProducts(allProducts);
+                if(isAdmin) renderAdminManageList();
+            } catch(e) {
+                document.getElementById('loader').innerText = "Baza bilan aloqa yo'q";
+            }
+        }
+
+        async function loadBrandSettings() {
+            try {
+                const { data } = await db.from('settings').select('*').eq('id', 1).single();
+                if(data) {
+                    if(data.title) document.getElementById('header-title').innerText = data.title;
+                    if(data.sub) document.getElementById('header-sub').innerText = data.sub;
+                    if(data.logo) document.getElementById('header-avatar').src = data.logo;
+                }
+            } catch(e){}
+        }
+
+        function renderCategories() {
+            const cats = [dict[currentLang].all, ...new Set(allProducts.map(p => p.category).filter(Boolean))];
+            document.getElementById('cat-list').innerHTML = cats.map(c => {
+                const catKey = c === dict[currentLang].all ? 'ALL' : c;
+                return `<div class="cat-chip ${activeCat === catKey ? 'active' : ''}" onclick="selectCategory('${catKey}')">${c}</div>`;
+            }).join('');
+        }
+
+        function selectCategory(cat) {
+            activeCat = cat;
+            renderCategories();
+            filterProducts();
+        }
+
+        function filterProducts() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filtered = allProducts.filter(p => {
+                const matchesCat = activeCat === 'ALL' || p.category === activeCat;
+                const matchesSearch = p.name.toLowerCase().includes(query);
+                return matchesCat && matchesSearch;
+            });
+            renderProducts(filtered);
+        }
+
+        function renderProducts(list) {
+            const container = document.getElementById('products');
+            container.innerHTML = '';
+            if(!list.length) {
+                container.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #64748b; margin-top: 20px;">Bo'sh</div>';
+                return;
+            }
+            list.forEach(p => {
+                const stockNum = parseInt(p.stock) || 0;
+                const isAvailable = stockNum > 0;
+                const badgeHtml = p.badge ? `<div class="badge badge-${p.badge.toLowerCase()}">${p.badge}</div>` : '';
+
+                container.innerHTML += `
+                    <div class="card">
+                        ${badgeHtml}
+                        <div class="card-img-box">
+                            <img src="${p.img || 'https://via.placeholder.com/150'}" alt="${p.name}">
+                        </div>
+                        <div class="title">${p.name}</div>
+                        <div class="stock">${dict[currentLang].stock}${p.stock || 0} ta</div>
+                        <div class="price-box">
+                            ${p.old_price ? `<span class="old-price">${p.old_price}</span>` : ''}
+                            <span class="price">${p.price}</span>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn-add ${!isAvailable ? 'btn-disabled' : ''}" onclick="addToCart(${p.id})">
+                                ${isAvailable ? dict[currentLang].addCart : dict[currentLang].out}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        /* Cart Functions */
+        function addToCart(id) {
+            const prod = allProducts.find(p => p.id === id);
+            if(!prod) return;
+            const existing = cart.find(item => item.id === id);
+            if(existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...prod, qty: 1 });
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cart-count').innerText = totalCount;
+            
+            const cartBar = document.getElementById('cart-bar');
+            if(totalCount > 0) {
+                cartBar.classList.add('active');
+                document.getElementById('cart-bar-total').innerText = totalCount + " ta mahsulot";
+            } else {
+                cartBar.classList.remove('active');
+            }
+        }
+
+        function openCartModal() {
+            const list = document.getElementById('cart-items-list');
+            list.innerHTML = '';
+            if(!cart.length) {
+                list.innerHTML = '<div style="text-align:center; color:#64748b;">Savatcha bo\'sh</div>';
+            } else {
+                cart.forEach(item => {
+                    list.innerHTML += `
+                        <div style="display:flex; justify-shadow:space-between; align-items:center; background:rgba(255,255,255,0.03); padding:10px; border-radius:12px; margin-bottom:8px;">
+                            <div style="flex:1;">
+                                <div style="font-size:12px; font-weight:700;">${item.name}</div>
+                                <div style="font-size:11px; color:#38bdf8;">${item.price}</div>
+                            </div>
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <button class="sm-btn btn-del" onclick="changeQty(${item.id}, -1)">-</button>
+                                <span style="font-size:12px; font-weight:700;">${item.qty}</span>
+                                <button class="sm-btn btn-save" onclick="changeQty(${item.id}, 1)">+</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            document.getElementById('cart-modal').style.display = 'block';
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if(item) {
+                item.qty += delta;
+                if(item.qty <= 0) cart = cart.filter(i => i.id !== id);
+            }
+            updateCartUI();
+            openCartModal();
+        }
+
+        function closeCartModal() { document.getElementById('cart-modal').style.display = 'none'; }
+
+        function sendOrder() {
+            if(!cart.length) return alert("Savatchangiz bo'sh!");
+            let msg = "Salom! Men quyidagi mahsulotlarni sotib olmoqchiman:\n\n";
+            cart.forEach(i => {
+                msg += `• ${i.name} (${i.qty} ta) - ${i.price}\n`;
+            });
+            window.open(`https://t.me/${myTelegram}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        /* Hidden Admin Logic */
+        function openAdminModal() {
+            document.getElementById('admin-modal').style.display = 'block';
+            if(isAdmin) {
+                document.getElementById('admin-auth-box').style.display = 'none';
+                document.getElementById('admin-dashboard').style.display = 'block';
+                renderAdminManageList();
+            }
+        }
+
+        function closeAdminModal() { document.getElementById('admin-modal').style.display = 'none'; }
+
+        document.getElementById('admin-pass').addEventListener('input', function(e) {
+            if(e.target.value === "ZEARZEAR1") {
+                isAdmin = true;
+                document.getElementById('admin-auth-box').style.display = 'none';
+                document.getElementById('admin-dashboard').style.display = 'block';
+                renderAdminManageList();
+            }
+        });
+
+        function switchTab(tab, el) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById(`section-${tab}`).classList.add('active');
+            if(tab === 'manage') renderAdminManageList();
+        }
+
+        async function saveBrandSettings() {
+            const title = document.getElementById('b-title').value;
+            const sub = document.getElementById('b-sub').value;
+            let updateObj = {};
+            if(title) updateObj.title = title;
+            if(sub) updateObj.sub = sub;
+            if(brandLogoBase64) updateObj.logo = brandLogoBase64;
+
+            await db.from('settings').upsert([{ id: 1, ...updateObj }]);
+            loadBrandSettings();
+            alert("Brend sozlamalari yangilandi!");
+        }
+
+        async function addProduct() {
+            const name = document.getElementById('p-name').value;
+            const price = document.getElementById('p-price').value;
+            const old_price = document.getElementById('p-old-price').value;
+            const stock = document.getElementById('p-stock').value || 1;
+            const category = document.getElementById('p-cat').value || "Barchasi";
+            const badge = document.getElementById('p-badge').value;
+
+            if(!name || !price) return alert("Nom va narxni kiriting!");
+
+            await db.from('products').insert([{ name, price, old_price, stock, category, badge, img: base64Image }]);
+            base64Image = "";
+            document.getElementById('file-text').innerText = "📁 Galereyadan rasm tanlash";
+            loadProducts();
+            alert("Mahsulot qo'shildi!");
+        }
+
+        function renderAdminManageList() {
+            const container = document.getElementById('admin-products-list');
+            container.innerHTML = '';
+            allProducts.forEach(p => {
+                container.innerHTML += `
+                    <div class="admin-prod-card">
+                        <img src="${p.img || 'https://via.placeholder.com/150'}" onclick="document.getElementById('file-edit-${p.id}').click()">
+                        <input type="file" id="file-edit-${p.id}" accept="image/*" style="display:none;" onchange="handleFileSelect(event, 'edit', ${p.id})">
+                        <div class="admin-prod-info">
+                            <input type="text" class="admin-input" id="edit-name-${p.id}" value="${p.name}">
+                            <input type="text" class="admin-input" id="edit-price-${p.id}" value="${p.price}">
+                            <div style="display:flex; gap:4px;">
+                                <input type="number" class="admin-input" id="edit-stock-${p.id}" value="${p.stock || 0}">
+                                <input type="text" class="admin-input" id="edit-cat-${p.id}" value="${p.category || ''}">
+                            </div>
+                        </div>
+                        <div class="admin-actions">
+                            <button class="sm-btn btn-save" onclick="updateProduct(${p.id})">💾</button>
+                            <button class="sm-btn btn-del" onclick="deleteProduct(${p.id})">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        async function updateProduct(id) {
+            const name = document.getElementById(`edit-name-${id}`).value;
+            const price = document.getElementById(`edit-price-${id}`).value;
+            const stock = document.getElementById(`edit-stock-${id}`).value;
+            const category = document.getElementById(`edit-cat-${id}`).value;
+
+            let updateData = { name, price, stock, category };
+            if(editBase64Images[id]) updateData.img = editBase64Images[id];
+
+            await db.from('products').update(updateData).eq('id', id);
+            alert("Saqlandi!");
+            loadProducts();
+        }
+
+        async function deleteProduct(id) {
+            if(confirm("O'chirilsinmi?")) {
+                await db.from('products').delete().eq('id', id);
+                loadProducts();
+            }
+        }
+
+        window.onload = function() {
+            loadProducts();
+            loadBrandSettings();
+        };
+    </script>
+</body>
+</html>
