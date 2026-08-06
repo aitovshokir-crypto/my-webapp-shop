@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyber Market Premium</title>
+    <title>Cyber Market WebApp</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,7 +11,8 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: #030712; color: #f8fafc; min-height: 100vh; padding: 16px; overflow-x: hidden; position: relative; }
 
-        .liquid-blob { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.6; z-index: -1; animation: float 12s infinite alternate ease-in-out; pointer-events: none; }
+        /* Background Animated Blobs */
+        .liquid-blob { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.5; z-index: -1; animation: float 12s infinite alternate ease-in-out; pointer-events: none; }
         .blob-1 { width: 280px; height: 280px; background: linear-gradient(135deg, #6366f1, #a855f7); top: -60px; left: -60px; }
         .blob-2 { width: 320px; height: 320px; background: linear-gradient(135deg, #ec4899, #3b82f6); bottom: -80px; right: -80px; animation-delay: -6s; }
 
@@ -20,6 +21,7 @@
             100% { transform: translate(40px, 50px) scale(1.15) rotate(180deg); }
         }
 
+        /* Header / Brand */
         .header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 12px 16px; margin-bottom: 16px;
@@ -28,73 +30,80 @@
         }
         .brand-container { display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; width: 100%; }
         .avatar-frame {
-            width: 46px; height: 46px; border-radius: 50%; padding: 2px;
-            background: linear-gradient(135deg, #6366f1, #ec4899);
+            width: 48px; height: 48px; border-radius: 50%; padding: 2px;
+            background: linear-gradient(135deg, #6366f1, #ec4899); flex-shrink: 0;
         }
         .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #0f172a; }
         .brand-info { display: flex; flex-direction: column; }
         .brand-title { font-size: 18px; font-weight: 800; color: #fff; }
-        .brand-sub { font-size: 10px; color: #94a3b8; font-weight: 500; }
+        .brand-sub { font-size: 11px; color: #94a3b8; font-weight: 500; }
 
+        /* Search & Categories */
         .controls { margin-bottom: 16px; display: flex; flex-direction: column; gap: 10px; }
         .search-box {
             width: 100%; padding: 14px 18px; border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03);
-            color: #fff; outline: none; font-size: 13px;
+            color: #fff; outline: none; font-size: 13px; transition: 0.3s;
         }
+        .search-box:focus { border-color: #6366f1; background: rgba(255, 255, 255, 0.06); }
 
         .cats { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
         .cats::-webkit-scrollbar { display: none; }
         .cat-chip {
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 8px 16px; border-radius: 20px; font-size: 11px; white-space: nowrap;
-            cursor: pointer; color: #94a3b8;
+            cursor: pointer; color: #94a3b8; font-weight: 600; transition: 0.3s;
         }
         .cat-chip.active { background: linear-gradient(135deg, #6366f1, #a855f7); color: #fff; border-color: transparent; }
 
+        /* Products Grid */
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
         .card {
             background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.07);
             border-radius: 20px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between;
-            position: relative;
+            position: relative; overflow: hidden;
         }
         .badge {
             position: absolute; top: 18px; left: 18px; padding: 4px 8px; border-radius: 8px;
             font-size: 9px; font-weight: 800; text-transform: uppercase; z-index: 2;
         }
-        .badge-sale { background: rgba(239, 68, 68, 0.8); color: #fff; }
-        .badge-new { background: rgba(16, 185, 129, 0.8); color: #fff; }
-        .badge-top { background: rgba(245, 158, 11, 0.8); color: #fff; }
+        .badge-sale { background: rgba(239, 68, 68, 0.9); color: #fff; }
+        .badge-new { background: rgba(16, 185, 129, 0.9); color: #fff; }
+        .badge-top { background: rgba(245, 158, 11, 0.9); color: #fff; }
 
-        .card-img-box { width: 100%; height: 120px; border-radius: 14px; overflow: hidden; margin-bottom: 10px; }
+        .card-img-box { width: 100%; height: 120px; border-radius: 14px; overflow: hidden; margin-bottom: 10px; background: #0f172a; }
         .card img { width: 100%; height: 100%; object-fit: cover; }
-        .title { font-weight: 700; font-size: 13px; color: #f8fafc; }
-        .price { font-weight: 800; font-size: 14px; color: #38bdf8; margin-top: 4px; margin-bottom: 8px; }
+        .title { font-weight: 700; font-size: 13px; color: #f8fafc; margin-bottom: 2px; }
+        .price { font-weight: 800; font-size: 14px; color: #38bdf8; margin-bottom: 10px; }
 
         .btn-add {
             background: linear-gradient(135deg, #6366f1, #a855f7);
             border: none; color: #fff; padding: 10px 0;
             border-radius: 12px; font-weight: 700; font-size: 11px; cursor: pointer; text-align: center;
         }
+        .btn-add:active { transform: scale(0.97); }
 
+        /* Admin Modal */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 7, 18, 0.95); backdrop-filter: blur(25px);
+            background: rgba(3, 7, 18, 0.96); backdrop-filter: blur(25px);
             z-index: 100; padding: 20px; overflow-y: auto;
         }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px; }
         .close-modal { background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 6px 14px; border-radius: 10px; font-size: 12px; cursor: pointer; }
 
         .admin-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
-        .tab-btn { flex: 1; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; padding: 8px; border-radius: 10px; font-size: 11px; cursor: pointer; }
-        .tab-btn.active { background: rgba(99, 102, 241, 0.3); color: #fff; }
+        .tab-btn { flex: 1; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; padding: 10px 6px; border-radius: 12px; font-size: 11px; font-weight: 700; cursor: pointer; }
+        .tab-btn.active { background: rgba(99, 102, 241, 0.3); color: #fff; border-color: #6366f1; }
 
         .admin-section { display: none; }
         .admin-section.active { display: block; }
 
-        .admin-input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-size: 12px; }
-        .file-label { display: block; width: 100%; padding: 12px; text-align: center; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.2); border-radius: 12px; font-size: 12px; color: #cbd5e1; cursor: pointer; margin-bottom: 10px; }
-        .action-btn { width: 100%; background: linear-gradient(135deg, #6366f1, #a855f7); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+        .admin-input { width: 100%; padding: 12px 14px; margin-bottom: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-size: 12px; outline: none; }
+        .admin-input:focus { border-color: #6366f1; }
+        .file-label { display: block; width: 100%; padding: 14px; text-align: center; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.2); border-radius: 12px; font-size: 12px; color: #cbd5e1; cursor: pointer; margin-bottom: 12px; }
+        .action-btn { width: 100%; background: linear-gradient(135deg, #6366f1, #a855f7); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 13px; }
+        .action-btn:active { transform: scale(0.98); }
 
         .loading { text-align: center; font-size: 13px; color: #64748b; margin-top: 50px; }
     </style>
@@ -104,6 +113,7 @@
     <div class="liquid-blob blob-1"></div>
     <div class="liquid-blob blob-2"></div>
 
+    <!-- Header Section -->
     <div class="header">
         <div class="brand-container" id="brand-trigger" onclick="handleBrandClick()">
             <div class="avatar-frame">
@@ -116,15 +126,17 @@
         </div>
     </div>
 
+    <!-- Controls Section -->
     <div class="controls">
         <input type="text" class="search-box" id="search-input" placeholder="Mahsulotlarni qidirish..." oninput="filterProducts()">
         <div class="cats" id="cat-list"></div>
     </div>
 
-    <div class="loading" id="loader">Yuklanmoqda...</div>
+    <!-- Main Grid Section -->
+    <div class="loading" id="loader">Mahsulotlar yuklanmoqda...</div>
     <div class="grid" id="products"></div>
 
-    <!-- Hidden Admin Modal -->
+    <!-- Admin Panel Modal -->
     <div class="modal" id="admin-modal">
         <div class="modal-header">
             <div style="font-weight: 800; font-size: 16px;">🔐 Admin Paneli</div>
@@ -142,6 +154,7 @@
                 <button class="tab-btn" onclick="switchTab('manage', this)">⚙️ Tahrirlash</button>
             </div>
 
+            <!-- Tab 1: Brand Settings -->
             <div class="admin-section active" id="section-brand">
                 <input type="text" class="admin-input" id="b-title" placeholder="Do'kon nomi">
                 <input type="text" class="admin-input" id="b-sub" placeholder="Kichik tavsif">
@@ -150,22 +163,24 @@
                 <button class="action-btn" onclick="saveBrandSettings()">Brendni Saqlash</button>
             </div>
 
+            <!-- Tab 2: Add Product -->
             <div class="admin-section" id="section-add">
                 <input type="text" class="admin-input" id="p-name" placeholder="Mahsulot nomi">
-                <input type="text" class="admin-input" id="p-price" placeholder="Narxi">
-                <input type="number" class="admin-input" id="p-stock" placeholder="Soni">
-                <input type="text" class="admin-input" id="p-cat" placeholder="Bo'lim">
-                <select class="admin-input" id="p-badge" style="background:#0f172a;">
-                    <option value="">Yorliq yo'q</option>
+                <input type="text" class="admin-input" id="p-price" placeholder="Narxi (masalan: 50,000 so'm)">
+                <input type="number" class="admin-input" id="p-stock" placeholder="Soni (zaxira)">
+                <input type="text" class="admin-input" id="p-cat" placeholder="Bo'lim (masalan: Obunalar)">
+                <select class="admin-input" id="p-badge" style="background:#0f172a; color:#fff;">
+                    <option value="">Yorliq yo'q (Badge)</option>
                     <option value="SALE">SALE</option>
                     <option value="NEW">NEW</option>
                     <option value="TOP">TOP</option>
                 </select>
-                <label class="file-label" for="p-file" id="file-text">📁 Rasm tanlash</label>
+                <label class="file-label" for="p-file" id="file-text">📁 Mahsulot rasmini tanlash</label>
                 <input type="file" id="p-file" accept="image/*" style="display:none;" onchange="handleFileSelect(event)">
-                <button class="action-btn" onclick="addProduct()">Qo'shish</button>
+                <button class="action-btn" onclick="addProduct()">Mahsulotni Saqlash</button>
             </div>
 
+            <!-- Tab 3: Manage Products -->
             <div class="admin-section" id="section-manage">
                 <div id="admin-products-list"></div>
             </div>
@@ -173,22 +188,29 @@
     </div>
 
     <script>
-        if(window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.expand();
+        // Telegram WebApp Initialization
+        if(window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.expand();
+            window.Telegram.WebApp.ready();
+        }
+        
         const myTelegram = "Xodim_aka";
-
         const SUPABASE_URL = "https://tglbdocejiginifpoloh.supabase.co";
         const SUPABASE_KEY = "sb_publishable_6WV0WtaAi9EgI6Wh3EJMvA_YH-2ncM1";
         let db;
 
         try {
             if (window.supabase) db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        } catch(e) {}
+        } catch(e) {
+            console.error("Supabase yuklanmadi:", e);
+        }
 
         let allProducts = [];
         let activeCat = 'ALL';
         let base64Image = "";
         let brandLogoBase64 = "";
 
+        // Admin Modal Triggering (Triple click on header)
         let clickCount = 0;
         let clickTimer;
         function handleBrandClick() {
@@ -202,7 +224,9 @@
             }
         }
 
-        function closeAdminModal() { document.getElementById('admin-modal').style.display = 'none'; }
+        function closeAdminModal() { 
+            document.getElementById('admin-modal').style.display = 'none'; 
+        }
 
         function checkPassword(val) {
             if(val === "ZEARZEAR1") {
@@ -220,6 +244,7 @@
             if(tab === 'manage') renderAdminManageList();
         }
 
+        // Image Compressor (Canvas resize to prevent large Base64 strings)
         function compressImage(file, callback) {
             const reader = new FileReader();
             reader.onload = function(evt) {
@@ -228,8 +253,11 @@
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    canvas.width = 400;
-                    canvas.height = img.height * (400 / img.width);
+                    const maxWidth = 350;
+                    const scaleSize = maxWidth / img.width;
+                    canvas.width = maxWidth;
+                    canvas.height = img.height * scaleSize;
+
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     callback(canvas.toDataURL('image/jpeg', 0.6));
                 };
@@ -241,7 +269,7 @@
             if (e.target.files[0]) {
                 compressImage(e.target.files[0], (res) => {
                     base64Image = res;
-                    document.getElementById('file-text').innerText = "✅ Rasm tayyor";
+                    document.getElementById('file-text').innerText = "✅ Rasm tayyor va siqildi";
                 });
             }
         }
@@ -255,17 +283,25 @@
             }
         }
 
+        // Load Products from Supabase
         async function loadProducts() {
             const loader = document.getElementById('loader');
             try {
-                const { data } = await db.from('products').select('*');
+                const { data, error } = await db.from('products').select('*');
                 loader.style.display = 'none';
+                if(error) {
+                    alert("Mahsulotlarni yuklashda xato: " + error.message);
+                    return;
+                }
                 allProducts = data || [];
                 renderCategories();
                 renderProducts(allProducts);
-            } catch(e) { loader.innerText = "Xatolik bo'ldi"; }
+            } catch(e) { 
+                loader.innerText = "Ulanishda xatolik yuz berdi"; 
+            }
         }
 
+        // Load Brand Settings from Supabase
         async function loadBrandSettings() {
             try {
                 const { data } = await db.from('settings').select('*').eq('id', 1).single();
@@ -295,7 +331,7 @@
             const query = document.getElementById('search-input').value.toLowerCase();
             const filtered = allProducts.filter(p => {
                 const matchesCat = activeCat === 'ALL' || p.category === activeCat;
-                const matchesSearch = p.name.toLowerCase().includes(query);
+                const matchesSearch = p.name ? p.name.toLowerCase().includes(query) : false;
                 return matchesCat && matchesSearch;
             });
             renderProducts(filtered);
@@ -305,7 +341,7 @@
             const container = document.getElementById('products');
             container.innerHTML = '';
             if(!list.length) {
-                container.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #64748b;">Mahsulot yo\'q</div>';
+                container.innerHTML = '<div style="grid-column: span 2; text-align: center; color: #64748b; padding: 20px 0;">Mahsulotlar topilmadi</div>';
                 return;
             }
             list.forEach(p => {
@@ -316,8 +352,10 @@
                         <div class="card-img-box">
                             <img src="${p.img || 'https://via.placeholder.com/150'}" alt="${p.name}">
                         </div>
-                        <div class="title">${p.name}</div>
-                        <div class="price">${p.price}</div>
+                        <div>
+                            <div class="title">${p.name}</div>
+                            <div class="price">${p.price}</div>
+                        </div>
                         <button class="btn-add" onclick="buyProduct('${p.name}', '${p.price}')">Sotib olish</button>
                     </div>
                 `;
@@ -329,6 +367,7 @@
             window.open(`https://t.me/${myTelegram}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
+        // Admin: Save Brand Settings
         async function saveBrandSettings() {
             const title = document.getElementById('b-title').value;
             const sub = document.getElementById('b-sub').value;
@@ -340,13 +379,15 @@
 
             const { error } = await db.from('settings').upsert([updateObj]);
             if(error) {
-                alert("Xatolik: Supabase SQL jadvali ochilganini tekshiring!");
+                alert("Xatolik: " + error.message);
             } else {
                 alert("Brend muvaffaqiyatli saqlandi!");
                 loadBrandSettings();
+                closeAdminModal();
             }
         }
 
+        // Admin: Add Product
         async function addProduct() {
             const name = document.getElementById('p-name').value;
             const price = document.getElementById('p-price').value;
@@ -354,39 +395,67 @@
             const category = document.getElementById('p-cat').value || "Barchasi";
             const badge = document.getElementById('p-badge').value;
 
-            if(!name || !price) return alert("Nom va narxni kiriting!");
+            if(!name || !price) return alert("Mahsulot nomi va narxini kiritishingiz shart!");
 
-            await db.from('products').insert([{ name, price, stock, category, badge, img: base64Image }]);
-            base64Image = "";
-            document.getElementById('file-text').innerText = "📁 Rasm tanlash";
-            loadProducts();
-            alert("Mahsulot qo'shildi!");
+            const { error } = await db.from('products').insert([{ 
+                name, 
+                price, 
+                stock, 
+                category, 
+                badge, 
+                img: base64Image 
+            }]);
+            
+            if(error) {
+                alert("Xatolik bo'ldi: " + error.message);
+            } else {
+                alert("Mahsulot saqlandi!");
+                base64Image = "";
+                document.getElementById('p-name').value = "";
+                document.getElementById('p-price').value = "";
+                document.getElementById('p-stock').value = "";
+                document.getElementById('p-cat').value = "";
+                document.getElementById('file-text').innerText = "📁 Mahsulot rasmini tanlash";
+                loadProducts();
+                closeAdminModal();
+            }
         }
 
+        // Admin: Render Management List
         function renderAdminManageList() {
             const container = document.getElementById('admin-products-list');
             container.innerHTML = '';
+            if(!allProducts.length) {
+                container.innerHTML = '<div style="text-align:center; color:#64748b;">Hali mahsulotlar yo\'q</div>';
+                return;
+            }
             allProducts.forEach(p => {
                 container.innerHTML += `
-                    <div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                    <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; border: 1px solid rgba(255,255,255,0.05);">
                         <div>
-                            <div style="font-size:12px; font-weight:700;">${p.name}</div>
-                            <div style="font-size:11px; color:#94a3b8;">${p.price}</div>
+                            <div style="font-size:13px; font-weight:700; color:#fff;">${p.name}</div>
+                            <div style="font-size:11px; color:#38bdf8;">${p.price}</div>
                         </div>
-                        <button style="background:rgba(239,68,68,0.2); color:#fca5a5; border:1px solid rgba(239,68,68,0.4); padding:6px 10px; border-radius:8px; font-size:10px; font-weight:700;" onclick="deleteProduct(${p.id})">🗑️ O'chirish</button>
+                        <button style="background:rgba(239,68,68,0.2); color:#fca5a5; border:1px solid rgba(239,68,68,0.4); padding:6px 12px; border-radius:10px; font-size:11px; font-weight:700; cursor:pointer;" onclick="deleteProduct(${p.id})">🗑️ O'chirish</button>
                     </div>
                 `;
             });
         }
 
+        // Admin: Delete Product
         async function deleteProduct(id) {
-            if(confirm("O'chirilsinmi?")) {
-                await db.from('products').delete().eq('id', id);
-                loadProducts();
-                renderAdminManageList();
+            if(confirm("Haqiqatdan ham ushbu mahsulotni o'chirmoqchimisiz?")) {
+                const { error } = await db.from('products').delete().eq('id', id);
+                if(error) {
+                    alert("O'chirishda xatolik: " + error.message);
+                } else {
+                    loadProducts();
+                    renderAdminManageList();
+                }
             }
         }
 
+        // Initialization on Load
         window.onload = function() {
             loadProducts();
             loadBrandSettings();
